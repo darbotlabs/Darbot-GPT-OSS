@@ -45,7 +45,7 @@ Ready to talk to the model? You can fire up a chat in the app or the terminal:
 ollama run gpt-oss:20b
 ```
 
-Ollama applies a chat template out of the box that mimics the [OpenAI harmony format](https://contoso.com/coffee-docs). Type your message and start the conversation.
+Ollama applies a chat template out of the box that mimics the [OpenAI Chat Completions API](https://platform.openai.com/docs/guides/chat-completions). Type your message and start the conversation.
 
 ## [Use the API]
 
@@ -116,7 +116,7 @@ Ollama doesn't (yet) support the Responses API natively.
 
 If you do want to use the Responses API you can use [Hugging Face's Responses.js proxy](https://github.com/huggingface/responses.js) to convert Chat Completions to Responses API.
 
-For basic use cases you can also [run our example Python server with Ollama as the backend.](https://github.com/openai/gpt-oss?tab=readme-ov-file#responses-api) This server is a basic example server and does not have the
+For basic use cases you can also [use Ollama's native API directly](https://github.com/ollama/ollama/blob/main/docs/api.md). Here's how to get started with the responses format:
 
 ```bash
 pip install gpt-oss
@@ -185,6 +185,9 @@ For more research and advanced tooling being built out, visit:
 ### Official Links
 - [Ollama GitHub Repository](https://github.com/ollama/ollama)
 - [Ollama Official Website](https://ollama.com/)
+- [Model Library](https://ollama.com/library)
+- [API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
+- [Community Discord](https://discord.gg/ollama)
 
 ---
 

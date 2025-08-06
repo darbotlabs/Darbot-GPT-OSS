@@ -425,12 +425,17 @@
             border-radius: 12px;
             padding: 1.5rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
 
         .cyber-resource-card:hover {
             transform: translateY(-3px);
             border-color: var(--cyber-purple);
             box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+            text-decoration: none;
+            color: inherit;
         }
 
         .cyber-resource-icon {
@@ -599,6 +604,7 @@
                     <a href="#setup">Setup Guide</a>
                     <a href="#features">Features</a>
                     <a href="#resources">Developer Resources</a>
+                    <a href="https://ollama.com/library" target="_blank">Models</a>
                     <a href="https://github.com/ollama/ollama" target="_blank">GitHub</a>
                 </div>
             </nav>
@@ -709,7 +715,7 @@
                             <span class="command">ollama run gpt-oss:20b</span>
                         </div>
                     </div>
-                    <p class="cyber-step-desc">Ollama applies a chat template out of the box that mimics the <a href="https://contoso.com/coffee-docs" target="_blank" style="color: var(--cyber-purple);">OpenAI harmony format</a>. Type your message and start the conversation.</p>
+                    <p class="cyber-step-desc">Ollama applies a chat template out of the box that mimics the <a href="https://platform.openai.com/docs/guides/chat-completions" target="_blank" style="color: var(--cyber-purple);">OpenAI Chat Completions API</a>. Type your message and start the conversation.</p>
                 </div>
                 
                 <div class="cyber-step">
@@ -797,7 +803,7 @@
                     <h3 class="cyber-step-title">Responses API workarounds</h3>
                     <p class="cyber-step-desc">Ollama doesn't (yet) support the Responses API natively.</p>
                     <p class="cyber-step-desc">If you do want to use the Responses API you can use <a href="https://github.com/huggingface/responses.js" target="_blank" style="color: var(--cyber-purple);">Hugging Face's Responses.js proxy</a> to convert Chat Completions to Responses API.</p>
-                    <p class="cyber-step-desc">For basic use cases you can also <a href="https://github.com/openai/gpt-oss?tab=readme-ov-file#responses-api" target="_blank" style="color: var(--cyber-purple);">run our example Python server with Ollama as the backend.</a> This server is a basic example server and does not have the</p>
+                    <p class="cyber-step-desc">For basic use cases you can also <a href="https://github.com/ollama/ollama/blob/main/docs/api.md" target="_blank" style="color: var(--cyber-purple);">use Ollama's native API directly</a>. Here's how to get started with the responses format:</p>
                     <div class="cyber-code-block">
                         <div class="cyber-code-header">
                             <div class="cyber-code-title">Terminal</div>
@@ -872,40 +878,122 @@
             
             <div class="cyber-resources">
                 <div class="cyber-resources-grid">
-                    <div class="cyber-resource-card">
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md" target="_blank" class="cyber-resource-card">
                         <div class="cyber-resource-icon">
                             <i class="fas fa-book"></i>
                         </div>
                         <h3 class="cyber-resource-title">Model Customization Guide</h3>
                         <p class="cyber-resource-desc">Learn how to create and fine-tune custom models with Modelfile configurations.</p>
-                    </div>
+                    </a>
                     
-                    <div class="cyber-resource-card">
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/api.md" target="_blank" class="cyber-resource-card">
                         <div class="cyber-resource-icon">
                             <i class="fas fa-network-wired"></i>
                         </div>
                         <h3 class="cyber-resource-title">API Integration</h3>
                         <p class="cyber-resource-desc">Complete guide to integrating Ollama with your applications via REST API.</p>
-                    </div>
+                    </a>
                     
-                    <div class="cyber-resource-card">
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/gpu.md" target="_blank" class="cyber-resource-card">
                         <div class="cyber-resource-icon">
                             <i class="fas fa-microchip"></i>
                         </div>
                         <h3 class="cyber-resource-title">Hardware Optimization</h3>
                         <p class="cyber-resource-desc">Maximize performance with GPU acceleration and memory optimization techniques.</p>
-                    </div>
+                    </a>
                     
-                    <div class="cyber-resource-card">
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/template.md" target="_blank" class="cyber-resource-card">
                         <div class="cyber-resource-icon">
                             <i class="fas fa-robot"></i>
                         </div>
                         <h3 class="cyber-resource-title">Advanced Prompting</h3>
                         <p class="cyber-resource-desc">Master prompt engineering techniques for better model responses and accuracy.</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="cyber-section">
+        <div class="cyber-container">
+            <h2 class="cyber-section-title">Additional Resources</h2>
+            <p class="cyber-section-subtitle">Explore more tools, documentation, and community resources</p>
+            
+            <div class="cyber-features-grid">
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Model Library</h3>
+                    <p class="cyber-feature-desc">Browse and download from hundreds of pre-trained models including Llama, Mistral, CodeLlama, and more.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://ollama.com/library" target="_blank" class="cyber-btn cyber-btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                            <i class="fas fa-external-link-alt"></i>
+                            Browse Models
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Community & Support</h3>
+                    <p class="cyber-feature-desc">Join thousands of developers in the Ollama community. Get help, share models, and contribute to the ecosystem.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://discord.gg/ollama" target="_blank" class="cyber-btn cyber-btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                            <i class="fab fa-discord"></i>
+                            Join Discord
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Contribute & Extend</h3>
+                    <p class="cyber-feature-desc">Ollama is open source. Contribute to the project, report issues, or build your own integrations and tools.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="https://github.com/ollama/ollama/blob/main/CONTRIBUTING.md" target="_blank" class="cyber-btn cyber-btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                            <i class="fas fa-code"></i>
+                            Contribute
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cyber-resources" style="margin-top: 3rem;">
+                <h3 style="text-align: center; color: var(--cyber-purple); margin-bottom: 2rem;">Official Documentation Links</h3>
+                <div class="cyber-resources-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <a href="https://github.com/ollama/ollama/blob/main/README.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-book"></i>
+                        Getting Started
+                    </a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/api.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-code"></i>
+                        API Reference
+                    </a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-cog"></i>
+                        Modelfile
+                    </a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/import.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-upload"></i>
+                        Import Models
+                    </a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/gpu.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-microchip"></i>
+                        GPU Support
+                    </a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/troubleshooting.md" target="_blank" class="cyber-download-btn">
+                        <i class="fas fa-tools"></i>
+                        Troubleshooting
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <footer class="cyber-footer">
@@ -924,9 +1012,12 @@
                 <div class="cyber-footer-links">
                     <a href="https://github.com/ollama/ollama" target="_blank">GitHub Repository</a>
                     <a href="https://ollama.com/" target="_blank">Official Website</a>
+                    <a href="https://ollama.com/library" target="_blank">Model Library</a>
                     <a href="#setup">Setup Guide</a>
+                    <a href="https://github.com/ollama/ollama/blob/main/docs/README.md" target="_blank">Documentation</a>
+                    <a href="https://discord.gg/ollama" target="_blank">Community</a>
                     <a href="https://github.com/darbotlabs" target="_blank">Darbot Labs Research</a>
-                    <a href="#">Inquire for Stealth Launch Details</a>
+                    <a href="https://github.com/darbotlabs/Darbot-GPT-OSS/issues" target="_blank">Support & Issues</a>
                 </div>
                 
                 <p class="cyber-copyright">
