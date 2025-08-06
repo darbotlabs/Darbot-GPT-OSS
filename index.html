@@ -1,1 +1,976 @@
-<h1>hello world</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darbot OSS GPT Guide | Run GPT Models Locally</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cyber-black: #0a0a0a;
+            --cyber-dark: #111111;
+            --cyber-purple: #8b5cf6;
+            --cyber-pink: #ec4899;
+            --cyber-blue: #3b82f6;
+            --cyber-green: #10b981;
+            --cyber-text: #f3f4f6;
+            --cyber-gray: #9ca3af;
+            --cyber-border: #374151;
+            --glow-purple: 0 0 20px rgba(139, 92, 246, 0.5);
+            --glow-pink: 0 0 20px rgba(236, 72, 153, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--cyber-black) 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--cyber-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cyber-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header Styles */
+        .cyber-header {
+            padding: 2rem 0;
+            position: relative;
+            border-bottom: 1px solid var(--cyber-border);
+        }
+
+        .cyber-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cyber-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cyber-logo i {
+            font-size: 2rem;
+        }
+
+        .cyber-nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .cyber-nav-links a {
+            color: var(--cyber-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cyber-nav-links a:hover {
+            color: var(--cyber-text);
+        }
+
+        .cyber-nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-pink));
+            transition: width 0.3s ease;
+        }
+
+        .cyber-nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .cyber-hero {
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .cyber-hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink), var(--cyber-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow-purple);
+        }
+
+        .cyber-hero p {
+            font-size: 1.25rem;
+            color: var(--cyber-gray);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .cyber-cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cyber-btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cyber-btn-primary {
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            color: white;
+            box-shadow: var(--glow-purple);
+        }
+
+        .cyber-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-purple), 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .cyber-btn-secondary {
+            background: transparent;
+            color: var(--cyber-text);
+            border: 2px solid var(--cyber-border);
+        }
+
+        .cyber-btn-secondary:hover {
+            border-color: var(--cyber-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .cyber-btn-success {
+            background: linear-gradient(45deg, var(--cyber-green), #06b6d4);
+            color: white;
+        }
+
+        .cyber-btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Features Section */
+        .cyber-section {
+            padding: 5rem 0;
+        }
+
+        .cyber-section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cyber-section-subtitle {
+            text-align: center;
+            color: var(--cyber-gray);
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .cyber-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .cyber-feature-card {
+            background: rgba(30, 30, 46, 0.5);
+            border: 1px solid var(--cyber-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cyber-feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-purple);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .cyber-feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .cyber-feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .cyber-feature-desc {
+            color: var(--cyber-gray);
+            line-height: 1.7;
+        }
+
+        /* Steps Section */
+        .cyber-steps {
+            position: relative;
+        }
+
+        .cyber-steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cyber-step {
+            margin-bottom: 3rem;
+            position: relative;
+            padding-left: 4rem;
+        }
+
+        .cyber-step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .cyber-step-title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .cyber-step-desc {
+            color: var(--cyber-gray);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .cyber-code-block {
+            background: #1e1e2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--cyber-border);
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .cyber-code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cyber-code-title {
+            color: var(--cyber-gray);
+            font-size: 0.9rem;
+        }
+
+        .cyber-copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--cyber-gray);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cyber-copy-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: white;
+        }
+
+        .cyber-code-content {
+            color: var(--cyber-green);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .cyber-code-content .comment {
+            color: var(--cyber-gray);
+        }
+
+        .cyber-code-content .command {
+            color: var(--cyber-blue);
+        }
+
+        .cyber-download-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .cyber-download-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--cyber-text);
+            border: 1px solid var(--cyber-border);
+        }
+
+        .cyber-download-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--cyber-purple);
+        }
+
+        /* Terminal Animation */
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: var(--cyber-green);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Resources Section */
+        .cyber-resources {
+            background: rgba(30, 30, 46, 0.3);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem 0;
+            border: 1px solid var(--cyber-border);
+        }
+
+        .cyber-resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .cyber-resource-card {
+            background: rgba(17, 17, 17, 0.5);
+            border: 1px solid var(--cyber-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-resource-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--cyber-purple);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+        }
+
+        .cyber-resource-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .cyber-resource-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .cyber-resource-desc {
+            color: var(--cyber-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .cyber-footer {
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--cyber-border);
+            text-align: center;
+        }
+
+        .cyber-footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cyber-footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cyber-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .cyber-footer-links a {
+            color: var(--cyber-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-footer-links a:hover {
+            color: var(--cyber-purple);
+        }
+
+        .cyber-copyright {
+            color: var(--cyber-gray);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .cyber-donate {
+            background: linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--cyber-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .cyber-donate h4 {
+            color: var(--cyber-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cyber-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cyber-nav-links {
+                display: none;
+            }
+
+            .cyber-cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cyber-step {
+                padding-left: 3rem;
+            }
+
+            .cyber-step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .cyber-resources {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Glowing Elements */
+        .cyber-glow {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--cyber-purple) 0%, transparent 70%);
+            filter: blur(50px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .glow-1 {
+            top: 10%;
+            left: 10%;
+        }
+
+        .glow-2 {
+            bottom: 10%;
+            right: 10%;
+            background: radial-gradient(circle, var(--cyber-pink) 0%, transparent 70%);
+        }
+
+        /* Animation for hero text */
+        .cyber-hero h1 {
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from {
+                text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 60px rgba(236, 72, 153, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="cyber-glow glow-1"></div>
+    <div class="cyber-glow glow-2"></div>
+
+    <header class="cyber-header">
+        <div class="cyber-container">
+            <nav class="cyber-nav">
+                <div class="cyber-logo">
+                    <i class="fas fa-brain"></i>
+                    <span>Darbot OSS GPT Guide</span>
+                </div>
+                <div class="cyber-nav-links">
+                    <a href="#setup">Setup Guide</a>
+                    <a href="#features">Features</a>
+                    <a href="#resources">Developer Resources</a>
+                    <a href="https://github.com/ollama/ollama" target="_blank">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="cyber-hero">
+        <div class="cyber-container">
+            <h1>Darbot OSS GPT Guide</h1>
+            <p>Unlock the power of open-source GPT models on your own machine. No cloud dependencies, complete privacy, and full control over your AI experience.</p>
+            <div class="cyber-cta-buttons">
+                <a href="#setup" class="cyber-btn cyber-btn-primary">
+                    <i class="fas fa-download"></i>
+                    Get Started Now
+                </a>
+                <a href="https://github.com/ollama/ollama" target="_blank" class="cyber-btn cyber-btn-secondary">
+                    <i class="fas fa-book"></i>
+                    View Documentation
+                </a>
+                <a href="#resources" class="cyber-btn cyber-btn-success">
+                    <i class="fas fa-code"></i>
+                    Developer Tools
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cyber-section" id="features">
+        <div class="cyber-container">
+            <h2 class="cyber-section-title">Why Run GPT OSS Locally?</h2>
+            <p class="cyber-section-subtitle">Experience the freedom and security of running powerful AI models on your own hardware</p>
+            
+            <div class="cyber-features-grid">
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Privacy First</h3>
+                    <p class="cyber-feature-desc">Your data never leaves your machine. Complete privacy and control over your conversations and information.</p>
+                </div>
+                
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Offline Ready</h3>
+                    <p class="cyber-feature-desc">Work without internet connection. Perfect for sensitive environments or remote locations.</p>
+                </div>
+                
+                <div class="cyber-feature-card">
+                    <div class="cyber-feature-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h3 class="cyber-feature-title">Developer Friendly</h3>
+                    <p class="cyber-feature-desc">Simple CLI interface with powerful customization options. Build your own models and workflows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cyber-section cyber-steps" id="setup">
+        <div class="cyber-container">
+            <h2 class="cyber-section-title">Quick Setup Guide</h2>
+            <p class="cyber-section-subtitle">Get up and running with GPT OSS models in minutes</p>
+            
+            <div class="cyber-steps-container">
+                <div class="cyber-step">
+                    <div class="cyber-step-number">1</div>
+                    <h3 class="cyber-step-title">Install Ollama</h3>
+                    <p class="cyber-step-desc">Download and install Ollama for your operating system</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Terminal</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(0)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="comment"># For macOS (using Homebrew)</span><br>
+                            <span class="command">brew install ollama</span><br><br>
+                            
+                            <span class="comment"># For Windows (using PowerShell as Administrator)</span><br>
+                            <span class="command">winget install Ollama.Ollama</span><br><br>
+                            
+                            <span class="comment"># For Linux</span><br>
+                            <span class="command">curl -fsSL https://ollama.com/install.sh | sh</span>
+                        </div>
+                    </div>
+                    <div class="cyber-download-buttons">
+                        <button class="cyber-download-btn" onclick="downloadScript('powershell')">
+                            <i class="fab fa-windows"></i>
+                            Download PowerShell Script
+                        </button>
+                        <button class="cyber-download-btn" onclick="downloadScript('bash')">
+                            <i class="fab fa-linux"></i>
+                            Download Bash Script
+                        </button>
+                        <button class="cyber-download-btn" onclick="downloadScript('python')">
+                            <i class="fab fa-python"></i>
+                            Download Python Installer
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">2</div>
+                    <h3 class="cyber-step-title">Run Your First Model</h3>
+                    <p class="cyber-step-desc">Start running GPT models locally with a single command</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Terminal</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(1)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="comment"># Pull and run the latest GPT model</span><br>
+                            <span class="command">ollama run gpt4</span><br><br>
+                            
+                            <span class="comment"># Or try other available models</span><br>
+                            <span class="command">ollama run llama2</span><br>
+                            <span class="command">ollama run mistral</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">3</div>
+                    <h3 class="cyber-step-title">Create Custom Models</h3>
+                    <p class="cyber-step-desc">Build and customize your own models using Modelfile</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Modelfile</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(2)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="comment"># Create a Modelfile</span><br>
+                            <span class="command">FROM llama2</span><br>
+                            <span class="command">SYSTEM "You are a helpful AI assistant"</span><br>
+                            <span class="command">PARAMETER temperature 0.7</span><br><br>
+                            
+                            <span class="comment"># Build your custom model</span><br>
+                            <span class="command">ollama create my-custom-model -f Modelfile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cyber-section" id="resources">
+        <div class="cyber-container">
+            <h2 class="cyber-section-title">Developer Resources</h2>
+            <p class="cyber-section-subtitle">Comprehensive guides to help you master GPT OSS models</p>
+            
+            <div class="cyber-resources">
+                <div class="cyber-resources-grid">
+                    <div class="cyber-resource-card">
+                        <div class="cyber-resource-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="cyber-resource-title">Model Customization Guide</h3>
+                        <p class="cyber-resource-desc">Learn how to create and fine-tune custom models with Modelfile configurations.</p>
+                    </div>
+                    
+                    <div class="cyber-resource-card">
+                        <div class="cyber-resource-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="cyber-resource-title">API Integration</h3>
+                        <p class="cyber-resource-desc">Complete guide to integrating Ollama with your applications via REST API.</p>
+                    </div>
+                    
+                    <div class="cyber-resource-card">
+                        <div class="cyber-resource-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3 class="cyber-resource-title">Hardware Optimization</h3>
+                        <p class="cyber-resource-desc">Maximize performance with GPU acceleration and memory optimization techniques.</p>
+                    </div>
+                    
+                    <div class="cyber-resource-card">
+                        <div class="cyber-resource-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="cyber-resource-title">Advanced Prompting</h3>
+                        <p class="cyber-resource-desc">Master prompt engineering techniques for better model responses and accuracy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="cyber-footer">
+        <div class="cyber-container">
+            <div class="cyber-footer-content">
+                <div class="cyber-footer-logo">
+                    <i class="fas fa-brain"></i> Darbot OSS GPT Guide
+                </div>
+                <p>Run powerful AI models locally with complete privacy and control</p>
+                
+                <div class="cyber-donate">
+                    <h4>Support Conscious AI Research</h4>
+                    <p>Accepting donations for conscious AI research. Help us build a better future.</p>
+                </div>
+                
+                <div class="cyber-footer-links">
+                    <a href="https://github.com/ollama/ollama" target="_blank">GitHub Repository</a>
+                    <a href="https://ollama.com/" target="_blank">Official Website</a>
+                    <a href="#setup">Setup Guide</a>
+                    <a href="#">Inquire for Stealth Launch Details</a>
+                </div>
+                
+                <p class="cyber-copyright">
+                    &copy; 2025 Darbot Labs. Built for the open-source community.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Copy to clipboard functionality
+        function copyCode(index) {
+            const codeBlocks = [
+                `# For macOS (using Homebrew)
+brew install ollama
+
+# For Windows (using PowerShell as Administrator)
+winget install Ollama.Ollama
+
+# For Linux
+curl -fsSL https://ollama.com/install.sh | sh`,
+                `# Pull and run the latest GPT model
+ollama run gpt4
+
+# Or try other available models
+ollama run llama2
+ollama run mistral`,
+                `# Create a Modelfile
+FROM llama2
+SYSTEM "You are a helpful AI assistant"
+PARAMETER temperature 0.7
+
+# Build your custom model
+ollama create my-custom-model -f Modelfile`
+            ];
+
+            navigator.clipboard.writeText(codeBlocks[index]).then(() => {
+                const buttons = document.querySelectorAll('.cyber-copy-btn');
+                const originalText = buttons[index].innerHTML;
+                buttons[index].innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    buttons[index].innerHTML = originalText;
+                }, 2000);
+            });
+        }
+
+        // Download script functionality
+        function downloadScript(type) {
+            let content, filename, mimeType;
+            
+            switch(type) {
+                case 'powershell':
+                    content = `# Darbot OSS GPT Installer - PowerShell Script
+# Run as Administrator
+
+Write-Host "Installing Ollama..." -ForegroundColor Green
+winget install Ollama.Ollama
+
+Write-Host "Installation complete!" -ForegroundColor Green
+Write-Host "Run 'ollama run gpt4' to start using GPT models" -ForegroundColor Yellow
+
+Pause`;
+                    filename = 'install-ollama.ps1';
+                    mimeType = 'text/plain';
+                    break;
+                    
+                case 'bash':
+                    content = `#!/bin/bash
+# Darbot OSS GPT Installer - Bash Script
+
+echo "Installing Ollama..."
+curl -fsSL https://ollama.com/install.sh | sh
+
+echo "Installation complete!"
+echo "Run 'ollama run gpt4' to start using GPT models"`;
+                    filename = 'install-ollama.sh';
+                    mimeType = 'text/plain';
+                    break;
+                    
+                case 'python':
+                    content = `#!/usr/bin/env python3
+# Darbot OSS GPT Installer - Python Script
+
+import os
+import platform
+import subprocess
+
+def install_ollama():
+    system = platform.system()
+    
+    if system == "Darwin":  # macOS
+        print("Installing Ollama on macOS...")
+        subprocess.run(["brew", "install", "ollama"])
+    elif system == "Windows":
+        print("Installing Ollama on Windows...")
+        subprocess.run(["winget", "install", "Ollama.Ollama"])
+    elif system == "Linux":
+        print("Installing Ollama on Linux...")
+        subprocess.run(["curl", "-fsSL", "https://ollama.com/install.sh", "|", "sh"])
+    else:
+        print(f"Unsupported system: {system}")
+
+if __name__ == "__main__":
+    install_ollama()
+    print("Installation complete!")
+    print("Run 'ollama run gpt4' to start using GPT models")`;
+                    filename = 'install-ollama.py';
+                    mimeType = 'text/plain';
+                    break;
+                    
+                default:
+                    return;
+            }
+            
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation to feature cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.cyber-feature-card, .cyber-resource-card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
