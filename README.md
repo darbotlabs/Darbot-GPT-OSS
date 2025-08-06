@@ -23,48 +23,145 @@ Simple CLI interface with powerful customization options. Build your own models 
 
 ## 📋 Quick Setup Guide
 
-Get up and running with GPT OSS models in minutes:
+### Install Ollama
 
-### Step 1: Install Ollama
+Install Ollama → [Get it here](https://ollama.com/download)
 
-Download and install Ollama for your operating system:
-
-```bash
-# For macOS (using Homebrew)
-brew install ollama
-
-# For Windows (using PowerShell as Administrator)
-winget install Ollama.Ollama
-
-# For Linux
-curl -fsSL https://ollama.com/install.sh | sh
-```
-
-### Step 2: Run Your First Model
-
-Start running GPT models locally with a single command:
+### Pull the model you want:
 
 ```bash
-# Pull and run the latest GPT model
-ollama run gpt4
+# For 20B
+ollama pull gpt-oss:20b
 
-# Or try other available models
-ollama run llama2
-ollama run mistral
+# For 120B
+ollama pull gpt-oss:120b
 ```
 
-### Step 3: Create Custom Models
+## [Chat with gpt-oss]
 
-Build and customize your own models using Modelfile:
+Ready to talk to the model? You can fire up a chat in the app or the terminal:
 
-```dockerfile
-# Create a Modelfile
-FROM llama2
-SYSTEM "You are a helpful AI assistant"
-PARAMETER temperature 0.7
+```bash
+ollama run gpt-oss:20b
+```
 
-# Build your custom model
-ollama create my-custom-model -f Modelfile
+Ollama applies a chat template out of the box that mimics the [OpenAI harmony format](https://contoso.com/coffee-docs). Type your message and start the conversation.
+
+## [Use the API]
+
+Ollama exposes a Chat Completions-compatible API, so you can use the OpenAI SDK without changing much. Here's a Python example:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://localhost:11434/v1",  # Local Ollama API
+    api_key="ollama"                       # Dummy key
+)
+
+response = client.chat.completions.create(
+    model="gpt-oss:20b",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Explain what MXFP4 quantization is."}
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+
+If you've used the OpenAI SDK before, this will feel instantly familiar.
+
+Alternatively, you can use the Ollama SDKs in [Python](https://github.com/ollama/ollama-python) or [JavaScript](https://github.com/ollama/ollama-js) directly.
+
+## [Using tools (function calling)]
+
+Ollama can:
+
+- Call functions
+- Use a built-in browser tool (in the app)
+
+Example of invoking a function via Chat Completions:
+
+```python
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Get current weather in a given city",
+            "parameters": {
+                "type": "object",
+                "properties": {"city": {"type": "string"}},
+                "required": ["city"]
+            },
+        },
+    }
+]
+
+response = client.chat.completions.create(
+    model="gpt-oss:20b",
+    messages=[{"role": "user", "content": "What's the weather in Berlin right now?"}],
+    tools=tools
+)
+
+print(response.choices[0].message)
+```
+
+Since the models can perform tool calling as part of the chain-of-thought (CoT) it's important for you to return the reasoning returned by the API back into a subsequent call to a tool call where you provide the answer until the model reaches a final answer.
+
+## [Responses API workarounds]
+
+Ollama doesn't (yet) support the Responses API natively.
+
+If you do want to use the Responses API you can use [Hugging Face's Responses.js proxy](https://github.com/huggingface/responses.js) to convert Chat Completions to Responses API.
+
+For basic use cases you can also [run our example Python server with Ollama as the backend.](https://github.com/openai/gpt-oss?tab=readme-ov-file#responses-api) This server is a basic example server and does not have the
+
+```bash
+pip install gpt-oss
+python -m gpt_oss.responses_api.serve \
+    --inference_backend=ollama \
+    --checkpoint gpt-oss:20b
+```
+
+## [Agents SDK integration]
+
+Want to use gpt-oss with OpenAI's Agents SDK?
+
+Both Agents SDK enable you to override the OpenAI base client to point to Ollama using Chat Completions or your Responses.js proxy for your local models. Alternatively, you can use the built-in functionality to point the Agents SDK against third party models.
+
+- **Python**: Use [LiteLLM](https://openai.github.io/openai-agents-python/models/litellm/) to proxy to Ollama through LiteLLM
+- **TypeScript**: Use [AI SDK](https://openai.github.io/openai-agents-js/extensions/ai-sdk/) with the [ollama adapter](https://ai-sdk.dev/providers/community-providers/ollama)
+
+Here's a Python Agents SDK example using LiteLLM:
+
+```python
+import asyncio
+from agents import Agent, Runner, function_tool, set_tracing_disabled
+from agents.extensions.models.litellm_model import LitellmModel
+
+set_tracing_disabled(True)
+
+@function_tool
+def get_weather(city: str):
+    print(f"[debug] getting weather for {city}")
+    return f"The weather in {city} is sunny."
+
+
+async def main(model: str, api_key: str):
+    agent = Agent(
+        name="Assistant",
+        instructions="You only respond in haikus.",
+        model=LitellmModel(model="ollama/gpt-oss:120b", api_key=api_key),
+        tools=[get_weather],
+    )
+
+    result = await Runner.run(agent, "What's the weather in Tokyo?")
+    print(result.final_output)
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 ---
