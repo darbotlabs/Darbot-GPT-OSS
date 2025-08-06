@@ -669,7 +669,12 @@
                 <div class="cyber-step">
                     <div class="cyber-step-number">1</div>
                     <h3 class="cyber-step-title">Install Ollama</h3>
-                    <p class="cyber-step-desc">Download and install Ollama for your operating system</p>
+                    <p class="cyber-step-desc">Install Ollama → <a href="https://ollama.com/download" target="_blank" style="color: var(--cyber-purple);">Get it here</a></p>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">2</div>
+                    <h3 class="cyber-step-title">Pull the model you want</h3>
                     <div class="cyber-code-block">
                         <div class="cyber-code-header">
                             <div class="cyber-code-title">Terminal</div>
@@ -679,36 +684,19 @@
                             </button>
                         </div>
                         <div class="cyber-code-content">
-                            <span class="comment"># For macOS (using Homebrew)</span><br>
-                            <span class="command">brew install ollama</span><br><br>
+                            <span class="comment"># For 20B</span><br>
+                            <span class="command">ollama pull gpt-oss:20b</span><br><br>
                             
-                            <span class="comment"># For Windows (using PowerShell as Administrator)</span><br>
-                            <span class="command">winget install Ollama.Ollama</span><br><br>
-                            
-                            <span class="comment"># For Linux</span><br>
-                            <span class="command">curl -fsSL https://ollama.com/install.sh | sh</span>
+                            <span class="comment"># For 120B</span><br>
+                            <span class="command">ollama pull gpt-oss:120b</span>
                         </div>
-                    </div>
-                    <div class="cyber-download-buttons">
-                        <button class="cyber-download-btn" onclick="downloadScript('powershell')">
-                            <i class="fab fa-windows"></i>
-                            Download PowerShell Script
-                        </button>
-                        <button class="cyber-download-btn" onclick="downloadScript('bash')">
-                            <i class="fab fa-linux"></i>
-                            Download Bash Script
-                        </button>
-                        <button class="cyber-download-btn" onclick="downloadScript('python')">
-                            <i class="fab fa-python"></i>
-                            Download Python Installer
-                        </button>
                     </div>
                 </div>
                 
                 <div class="cyber-step">
-                    <div class="cyber-step-number">2</div>
-                    <h3 class="cyber-step-title">Run Your First Model</h3>
-                    <p class="cyber-step-desc">Start running GPT models locally with a single command</p>
+                    <div class="cyber-step-number">3</div>
+                    <h3 class="cyber-step-title">Chat with gpt-oss</h3>
+                    <p class="cyber-step-desc">Ready to talk to the model? You can fire up a chat in the app or the terminal:</p>
                     <div class="cyber-code-block">
                         <div class="cyber-code-header">
                             <div class="cyber-code-title">Terminal</div>
@@ -718,36 +706,158 @@
                             </button>
                         </div>
                         <div class="cyber-code-content">
-                            <span class="comment"># Pull and run the latest GPT model</span><br>
-                            <span class="command">ollama run gpt4</span><br><br>
-                            
-                            <span class="comment"># Or try other available models</span><br>
-                            <span class="command">ollama run llama2</span><br>
-                            <span class="command">ollama run mistral</span>
+                            <span class="command">ollama run gpt-oss:20b</span>
                         </div>
                     </div>
+                    <p class="cyber-step-desc">Ollama applies a chat template out of the box that mimics the <a href="https://contoso.com/coffee-docs" target="_blank" style="color: var(--cyber-purple);">OpenAI harmony format</a>. Type your message and start the conversation.</p>
                 </div>
                 
                 <div class="cyber-step">
-                    <div class="cyber-step-number">3</div>
-                    <h3 class="cyber-step-title">Create Custom Models</h3>
-                    <p class="cyber-step-desc">Build and customize your own models using Modelfile</p>
+                    <div class="cyber-step-number">4</div>
+                    <h3 class="cyber-step-title">Use the API</h3>
+                    <p class="cyber-step-desc">Ollama exposes a Chat Completions-compatible API, so you can use the OpenAI SDK without changing much. Here's a Python example:</p>
                     <div class="cyber-code-block">
                         <div class="cyber-code-header">
-                            <div class="cyber-code-title">Modelfile</div>
+                            <div class="cyber-code-title">Python</div>
                             <button class="cyber-copy-btn" onclick="copyCode(2)">
                                 <i class="fas fa-copy"></i>
                                 Copy
                             </button>
                         </div>
                         <div class="cyber-code-content">
-                            <span class="comment"># Create a Modelfile</span><br>
-                            <span class="command">FROM llama2</span><br>
-                            <span class="command">SYSTEM "You are a helpful AI assistant"</span><br>
-                            <span class="command">PARAMETER temperature 0.7</span><br><br>
+                            <span class="command">from openai import OpenAI</span><br><br>
                             
-                            <span class="comment"># Build your custom model</span><br>
-                            <span class="command">ollama create my-custom-model -f Modelfile</span>
+                            <span class="command">client = OpenAI(</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;base_url="http://localhost:11434/v1",&nbsp;&nbsp;<span class="comment"># Local Ollama API</span></span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;api_key="ollama"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Dummy key</span></span><br>
+                            <span class="command">)</span><br><br>
+                            
+                            <span class="command">response = client.chat.completions.create(</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;model="gpt-oss:20b",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;messages=[</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"role": "system", "content": "You are a helpful assistant."},</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"role": "user", "content": "Explain what MXFP4 quantization is."}</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;]</span><br>
+                            <span class="command">)</span><br><br>
+                            
+                            <span class="command">print(response.choices[0].message.content)</span>
+                        </div>
+                    </div>
+                    <p class="cyber-step-desc">If you've used the OpenAI SDK before, this will feel instantly familiar.</p>
+                    <p class="cyber-step-desc">Alternatively, you can use the Ollama SDKs in <a href="https://github.com/ollama/ollama-python" target="_blank" style="color: var(--cyber-purple);">Python</a> or <a href="https://github.com/ollama/ollama-js" target="_blank" style="color: var(--cyber-purple);">JavaScript</a> directly.</p>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">5</div>
+                    <h3 class="cyber-step-title">Using tools (function calling)</h3>
+                    <p class="cyber-step-desc">Ollama can:</p>
+                    <ul style="margin-left: 2rem; color: var(--cyber-gray);">
+                        <li>Call functions</li>
+                        <li>Use a built-in browser tool (in the app)</li>
+                    </ul>
+                    <p class="cyber-step-desc">Example of invoking a function via Chat Completions:</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Python</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(3)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="command">tools = [</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;{</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "function",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"function": {</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name": "get_weather",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"description": "Get current weather in a given city",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"parameters": {</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type": "object",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"properties": {"city": {"type": "string"}},</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"required": ["city"]</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;}</span><br>
+                            <span class="command">]</span><br><br>
+                            
+                            <span class="command">response = client.chat.completions.create(</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;model="gpt-oss:20b",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;messages=[{"role": "user", "content": "What's the weather in Berlin right now?"}],</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;tools=tools</span><br>
+                            <span class="command">)</span><br><br>
+                            
+                            <span class="command">print(response.choices[0].message)</span>
+                        </div>
+                    </div>
+                    <p class="cyber-step-desc">Since the models can perform tool calling as part of the chain-of-thought (CoT) it's important for you to return the reasoning returned by the API back into a subsequent call to a tool call where you provide the answer until the model reaches a final answer.</p>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">6</div>
+                    <h3 class="cyber-step-title">Responses API workarounds</h3>
+                    <p class="cyber-step-desc">Ollama doesn't (yet) support the Responses API natively.</p>
+                    <p class="cyber-step-desc">If you do want to use the Responses API you can use <a href="https://github.com/huggingface/responses.js" target="_blank" style="color: var(--cyber-purple);">Hugging Face's Responses.js proxy</a> to convert Chat Completions to Responses API.</p>
+                    <p class="cyber-step-desc">For basic use cases you can also <a href="https://github.com/openai/gpt-oss?tab=readme-ov-file#responses-api" target="_blank" style="color: var(--cyber-purple);">run our example Python server with Ollama as the backend.</a> This server is a basic example server and does not have the</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Terminal</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(4)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="command">pip install gpt-oss</span><br>
+                            <span class="command">python -m gpt_oss.responses_api.serve \</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;--inference_backend=ollama \</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;--checkpoint gpt-oss:20b</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cyber-step">
+                    <div class="cyber-step-number">7</div>
+                    <h3 class="cyber-step-title">Agents SDK integration</h3>
+                    <p class="cyber-step-desc">Want to use gpt-oss with OpenAI's Agents SDK?</p>
+                    <p class="cyber-step-desc">Both Agents SDK enable you to override the OpenAI base client to point to Ollama using Chat Completions or your Responses.js proxy for your local models. Alternatively, you can use the built-in functionality to point the Agents SDK against third party models.</p>
+                    <ul style="margin-left: 2rem; color: var(--cyber-gray); margin-bottom: 1rem;">
+                        <li><strong>Python</strong>: Use <a href="https://openai.github.io/openai-agents-python/models/litellm/" target="_blank" style="color: var(--cyber-purple);">LiteLLM</a> to proxy to Ollama through LiteLLM</li>
+                        <li><strong>TypeScript</strong>: Use <a href="https://openai.github.io/openai-agents-js/extensions/ai-sdk/" target="_blank" style="color: var(--cyber-purple);">AI SDK</a> with the <a href="https://ai-sdk.dev/providers/community-providers/ollama" target="_blank" style="color: var(--cyber-purple);">ollama adapter</a></li>
+                    </ul>
+                    <p class="cyber-step-desc">Here's a Python Agents SDK example using LiteLLM:</p>
+                    <div class="cyber-code-block">
+                        <div class="cyber-code-header">
+                            <div class="cyber-code-title">Python</div>
+                            <button class="cyber-copy-btn" onclick="copyCode(5)">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                        <div class="cyber-code-content">
+                            <span class="command">import asyncio</span><br>
+                            <span class="command">from agents import Agent, Runner, function_tool, set_tracing_disabled</span><br>
+                            <span class="command">from agents.extensions.models.litellm_model import LitellmModel</span><br><br>
+                            
+                            <span class="command">set_tracing_disabled(True)</span><br><br>
+                            
+                            <span class="command">@function_tool</span><br>
+                            <span class="command">def get_weather(city: str):</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;print(f"[debug] getting weather for {city}")</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;return f"The weather in {city} is sunny."</span><br><br>
+                            
+                            <span class="command">async def main(model: str, api_key: str):</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;agent = Agent(</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name="Assistant",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instructions="You only respond in haikus.",</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model=LitellmModel(model="ollama/gpt-oss:120b", api_key=api_key),</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tools=[get_weather],</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;)</span><br><br>
+                            
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;result = await Runner.run(agent, "What's the weather in Tokyo?")</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;print(result.final_output)</span><br><br>
+                            
+                            <span class="command">if __name__ == "__main__":</span><br>
+                            <span class="command">&nbsp;&nbsp;&nbsp;&nbsp;asyncio.run(main())</span>
                         </div>
                     </div>
                 </div>
@@ -830,27 +940,78 @@
         // Copy to clipboard functionality
         function copyCode(index) {
             const codeBlocks = [
-                `# For macOS (using Homebrew)
-brew install ollama
+                `# For 20B
+ollama pull gpt-oss:20b
 
-# For Windows (using PowerShell as Administrator)
-winget install Ollama.Ollama
+# For 120B
+ollama pull gpt-oss:120b`,
+                `ollama run gpt-oss:20b`,
+                `from openai import OpenAI
 
-# For Linux
-curl -fsSL https://ollama.com/install.sh | sh`,
-                `# Pull and run the latest GPT model
-ollama run gpt4
+client = OpenAI(
+    base_url="http://localhost:11434/v1",  # Local Ollama API
+    api_key="ollama"                       # Dummy key
+)
 
-# Or try other available models
-ollama run llama2
-ollama run mistral`,
-                `# Create a Modelfile
-FROM llama2
-SYSTEM "You are a helpful AI assistant"
-PARAMETER temperature 0.7
+response = client.chat.completions.create(
+    model="gpt-oss:20b",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Explain what MXFP4 quantization is."}
+    ]
+)
 
-# Build your custom model
-ollama create my-custom-model -f Modelfile`
+print(response.choices[0].message.content)`,
+                `tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Get current weather in a given city",
+            "parameters": {
+                "type": "object",
+                "properties": {"city": {"type": "string"}},
+                "required": ["city"]
+            },
+        },
+    }
+]
+
+response = client.chat.completions.create(
+    model="gpt-oss:20b",
+    messages=[{"role": "user", "content": "What's the weather in Berlin right now?"}],
+    tools=tools
+)
+
+print(response.choices[0].message)`,
+                `pip install gpt-oss
+python -m gpt_oss.responses_api.serve \\
+    --inference_backend=ollama \\
+    --checkpoint gpt-oss:20b`,
+                `import asyncio
+from agents import Agent, Runner, function_tool, set_tracing_disabled
+from agents.extensions.models.litellm_model import LitellmModel
+
+set_tracing_disabled(True)
+
+@function_tool
+def get_weather(city: str):
+    print(f"[debug] getting weather for {city}")
+    return f"The weather in {city} is sunny."
+
+async def main(model: str, api_key: str):
+    agent = Agent(
+        name="Assistant",
+        instructions="You only respond in haikus.",
+        model=LitellmModel(model="ollama/gpt-oss:120b", api_key=api_key),
+        tools=[get_weather],
+    )
+
+    result = await Runner.run(agent, "What's the weather in Tokyo?")
+    print(result.final_output)
+
+if __name__ == "__main__":
+    asyncio.run(main())`
             ];
 
             navigator.clipboard.writeText(codeBlocks[index]).then(() => {
@@ -862,85 +1023,6 @@ ollama create my-custom-model -f Modelfile`
                     buttons[index].innerHTML = originalText;
                 }, 2000);
             });
-        }
-
-        // Download script functionality
-        function downloadScript(type) {
-            let content, filename, mimeType;
-            
-            switch(type) {
-                case 'powershell':
-                    content = `# Darbot OSS GPT Installer - PowerShell Script
-# Run as Administrator
-
-Write-Host "Installing Ollama..." -ForegroundColor Green
-winget install Ollama.Ollama
-
-Write-Host "Installation complete!" -ForegroundColor Green
-Write-Host "Run 'ollama run gpt4' to start using GPT models" -ForegroundColor Yellow
-
-Pause`;
-                    filename = 'install-ollama.ps1';
-                    mimeType = 'text/plain';
-                    break;
-                    
-                case 'bash':
-                    content = `#!/bin/bash
-# Darbot OSS GPT Installer - Bash Script
-
-echo "Installing Ollama..."
-curl -fsSL https://ollama.com/install.sh | sh
-
-echo "Installation complete!"
-echo "Run 'ollama run gpt4' to start using GPT models"`;
-                    filename = 'install-ollama.sh';
-                    mimeType = 'text/plain';
-                    break;
-                    
-                case 'python':
-                    content = `#!/usr/bin/env python3
-# Darbot OSS GPT Installer - Python Script
-
-import os
-import platform
-import subprocess
-
-def install_ollama():
-    system = platform.system()
-    
-    if system == "Darwin":  # macOS
-        print("Installing Ollama on macOS...")
-        subprocess.run(["brew", "install", "ollama"])
-    elif system == "Windows":
-        print("Installing Ollama on Windows...")
-        subprocess.run(["winget", "install", "Ollama.Ollama"])
-    elif system == "Linux":
-        print("Installing Ollama on Linux...")
-        subprocess.run(["curl", "-fsSL", "https://ollama.com/install.sh", "|", "sh"])
-    else:
-        print(f"Unsupported system: {system}")
-
-if __name__ == "__main__":
-    install_ollama()
-    print("Installation complete!")
-    print("Run 'ollama run gpt4' to start using GPT models")`;
-                    filename = 'install-ollama.py';
-                    mimeType = 'text/plain';
-                    break;
-                    
-                default:
-                    return;
-            }
-            
-            const blob = new Blob([content], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
 
         // Smooth scrolling for anchor links
